@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@500&family=Noto+Sans+KR:wght@900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url("background.svg");
+    box-sizing: border-box;
+}
+
+article {
+    overflow-x: hidden;
+    position: relative;
+}
+
+ul {
+    list-style: none;
+    margin-left: 0;
+    margin-block-start: 0;
+    padding-inline-start: 0;
+}
+
+.header {
+    background: antiquewhite;
+    display: flex;
+    justify-content: center;
+}
+
+#recentMovieContainer {
+    display: flex;
+    min-height: 25vh;
+    transition: ease 1s;
+}
+
+.recent-movie-container {
+    display: flex;
+    height: inherit;
+    background: rgba(173, 216, 230, 0.4);
+}
+
+.recent-movie-container-text {
+    padding: 20px;
+}
+
+.recent-movie-container-text h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    margin: 1rem 0 2rem 0;
+}
+
+.recent-movie-container-text p {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.recent-movie-container-text span {
+    margin-right: 200px;
+}
+
+.recent-movie-card {
+    margin: 10px;
+    width: 100%;
+    border-radius: 5px;
+    height: 45vh;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    cursor: pointer;
+}
+
+.recent-movie-card-img {
+    height: inherit;
+}
+
+.recent-movie-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+#sliderButtonContainer {
+    position: absolute;
+    display: flex;
+    width: fit-content;
+    justify-content: end;
+    align-items: center;
+    height: 30px;
+    bottom: 10px;
+}
+
+.list-button {
+    margin: 3px;
+    height: 10px;
+    width: 10px;
+    border: none;
+    background: lightgray;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.bg-black {
+    background: #212529;
+}
