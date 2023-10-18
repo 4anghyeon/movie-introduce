@@ -3,7 +3,8 @@ const $dotButtonContainer = document.getElementById("dotButtonContainer");
 const $popularMovieContainer = document.getElementById("popularMovieContainer");
 
 let recentlyMovieSlideInterval = null;
-let lastIndex = 0;
+let recentlyLastIndex = 0;
+let popularLastIndex = 0;
 
 // TMDB 관련 옵션 정의 클래스
 class TMDB {
@@ -36,10 +37,9 @@ class TMDB {
 }
 
 // 최신 영화를 왼쪽으로 움직이게 하는 함수
-const moveRecentlyCardByIndex = (index) => {
-  $recentMovieContainer.style.transform = `translate3d(${-(
-    100 * index
-  )}vw, 0px, 0px)`;
+const moveRecentlyCardByIndex = (elem, width) => {
+  console.log(width);
+  elem.style.transform = `translate3d(${width}vw, 0px, 0px)`;
 };
 
 // 최신 영화 슬라이드 버튼 클릭시 색상 변화
@@ -65,26 +65,29 @@ TMDB.getNowPlaying().then((list) => {
     // 최신 영화 카드 자동 이동 Interval 생성
     const cardMoveInterval = () => {
       return setInterval(() => {
-        if (++lastIndex >= resultLength) {
+        if (++recentlyLastIndex >= resultLength) {
           // 보여지는 index가 최신 영화 목록 길이 보다 커지면 초기화
-          lastIndex = 0;
+          recentlyLastIndex = 0;
 
           // [1] [2] [3] ... [N] [1] 순으로 목록이 되어있음. 끝으로 가면 무한 루프처럼 보이기 위해 transisiton 잠시 멈춤
           $recentMovieContainer.style.transition = "ease 0s";
-          moveRecentlyCardByIndex(0);
+          moveRecentlyCardByIndex($recentMovieContainer, 0);
           changeSelectedButtonColor(0);
           setTimeout(() => {
             $recentMovieContainer.style.transition = "ease 1s";
           }, 1000);
         } else {
-          moveRecentlyCardByIndex(lastIndex);
+          moveRecentlyCardByIndex(
+            $recentMovieContainer,
+            -(100 * recentlyLastIndex),
+          );
 
           // card는 결과개수 + 1이지만 슬라이드 버튼은 결과개수 만큼만 보이기 때문에 lastIndex에 1을 더해서 비교
           changeSelectedButtonColor(
-            lastIndex + 1 >= resultLength ? 0 : lastIndex,
+            recentlyLastIndex + 1 >= resultLength ? 0 : recentlyLastIndex,
           );
         }
-      }, 300000);
+      }, 3000);
     };
 
     // 카드를 포함하는 박스에 마우스를 올려놓을시 Interval 제거
@@ -126,8 +129,8 @@ TMDB.getNowPlaying().then((list) => {
 
       itemButton.addEventListener("click", (e) => {
         changeSelectedButtonColor(order);
-        moveRecentlyCardByIndex(order);
-        lastIndex = order;
+        moveRecentlyCardByIndex($recentMovieContainer, -(100 * order));
+        recentlyLastIndex = order;
       });
 
       itemLi.append(itemButton);
@@ -154,6 +157,25 @@ TMDB.getPopular().then((list) => {
       moviePosterImg.className = "movie-poster";
       movieCardDiv.append(moviePosterImg);
       $popularMovieContainer.append(movieCardDiv);
+    });
+
+    document.querySelectorAll(".rightMoveButton").forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        moveRecentlyCardByIndex(
+          e.target.parentNode.parentNode.children[1],
+          -(50 * ++popularLastIndex),
+        );
+      });
+    });
+
+    document.querySelectorAll(".leftMoveButton").forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        if ($popularMovieContainer.children.length < popularLastIndex) return;
+        moveRecentlyCardByIndex(
+          e.target.parentNode.parentNode.children[1],
+          $popularMovieContainer.style.width - 50 * --popularLastIndex,
+        );
+      });
     });
   }
 });
