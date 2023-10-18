@@ -1,5 +1,7 @@
 const $recentMovieContainer = document.getElementById("recentMovieContainer");
-const $sliderButtonContainer = document.getElementById("sliderButtonContainer");
+const $dotButtonContainer = document.getElementById("dotButtonContainer");
+const $popularMovieContainer = document.getElementById("popularMovieContainer");
+
 let recentlyMovieSlideInterval = null;
 let lastIndex = 0;
 
@@ -20,7 +22,15 @@ class TMDB {
       this.options,
     )
       .then((response) => response.json())
-      .then((response) => response)
+      .catch((err) => console.error(err));
+  }
+
+  static getPopular() {
+    return fetch(
+      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&region=KR&page=1",
+      this.options,
+    )
+      .then((response) => response.json())
       .catch((err) => console.error(err));
   }
 }
@@ -44,8 +54,7 @@ const changeSelectedButtonColor = (order) => {
 
 // 최신 영화 호출
 TMDB.getNowPlaying().then((list) => {
-  console.log(list);
-  const results = list.results.slice(0, 5);
+  const results = list.results.slice(0, 15);
 
   // 결과가 있을 경우
   if (results) {
@@ -69,14 +78,13 @@ TMDB.getNowPlaying().then((list) => {
           }, 1000);
         } else {
           moveRecentlyCardByIndex(lastIndex);
-          console.log(lastIndex);
 
           // card는 결과개수 + 1이지만 슬라이드 버튼은 결과개수 만큼만 보이기 때문에 lastIndex에 1을 더해서 비교
           changeSelectedButtonColor(
             lastIndex + 1 >= resultLength ? 0 : lastIndex,
           );
         }
-      }, 3000);
+      }, 300000);
     };
 
     // 카드를 포함하는 박스에 마우스를 올려놓을시 Interval 제거
@@ -91,21 +99,21 @@ TMDB.getNowPlaying().then((list) => {
 
     // 최신 영화 Card 생성
     let firstMovie;
-    results.forEach((item, order) => {
+    results.forEach((movie, order) => {
       // 최신 영화 추가
       const itemDiv = document.createElement("div");
       itemDiv.className = "recent-movie-card";
 
       const html = `
-        <div class="recent-movie-container"><img src="https://image.tmdb.org/t/p/original/${item.backdrop_path}" alt="poster" class="recent-movie-card-img" />
+        <div class="recent-movie-container"><img src="https://image.tmdb.org/t/p/original/${movie.backdrop_path}" alt="poster" class="recent-movie-card-img" />
           <div class="recent-movie-container-text">
-            <h1>${item.title}</h1>
-            <p><span>⭐️ 평점: ${item.vote_average} / 10</span><span>🗓️ 개봉일: ${item.release_date}</span></p>
-            <p>${item.overview}</p>
+            <h1>${movie.title}</h1>
+            <p><span>⭐️ 평점: ${movie.vote_average} / 10</span><span>🗓️ 개봉일: ${movie.release_date}</span></p>
+            <p>${movie.overview}</p>
           </div>
-          </div>`;
+        </div>`;
       const itemImage = document.createElement("img");
-      itemImage.src = `https://image.tmdb.org/t/p/original/${item.backdrop_path}`;
+      itemImage.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
 
       itemDiv.innerHTML = html;
       if (order === 0) firstMovie = itemDiv.cloneNode(true);
@@ -124,13 +132,28 @@ TMDB.getNowPlaying().then((list) => {
 
       itemLi.append(itemButton);
 
-      $sliderButtonContainer.append(itemLi);
+      $dotButtonContainer.append(itemLi);
     });
 
     // 초기화
     changeSelectedButtonColor(0);
     $recentMovieContainer.append(firstMovie); // 마지막에 첫번째 영화 하나 추가 (무한 루프처럼 보이게 하기 위해)
     recentlyMovieSlideInterval = cardMoveInterval(); // 처음 인터벌 시작
-    $sliderButtonContainer.style.left = `${98 - resultLength}vw`; // 버튼 위치 조정
+  }
+});
+
+// 인기 영화 호출
+TMDB.getPopular().then((list) => {
+  console.log(list);
+  const results = list.results;
+  if (results) {
+    results.forEach((movie) => {
+      const movieCardDiv = document.createElement("div");
+      const moviePosterImg = document.createElement("img");
+      moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+      moviePosterImg.className = "movie-poster";
+      movieCardDiv.append(moviePosterImg);
+      $popularMovieContainer.append(movieCardDiv);
+    });
   }
 });

@@ -1,0 +1,45 @@
+#popularMovieContainer {
+    position: relative;
+
+    display: flex;
+    min-height: 30vh;
+    transition: ease 1s;
+}
+
+#slideButtonContainer {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    bottom: 35%;
+}
+
+#slideButtonContainer button {
+    width: 50px;
+    height: 70px;
+    font-size: 4rem;
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all .5s;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#slideButtonContainer button:hover {
+    background: rgba(33, 37, 41, 0.42);
+}
+
+#popularMovieArticle h1 {
+    margin: 10px 10px 0 10px;
+    font-size: 1.7rem;
+    color: #343a40;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.movie-poster {
+    width: 15vw;
+    margin: 10px;
+    border-radius: 5px;
+}

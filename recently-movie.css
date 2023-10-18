@@ -1,0 +1,68 @@
+#recentMovieContainer {
+    display: flex;
+    min-height: 25vh;
+    transition: ease 1s;
+}
+
+.recent-movie-container {
+    display: flex;
+    height: inherit;
+    background: rgba(173, 216, 230, 0.4);
+}
+
+.recent-movie-container-text {
+    padding: 20px;
+}
+
+.recent-movie-container-text h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    margin: 1rem 0 2rem 0;
+}
+
+.recent-movie-container-text p {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.recent-movie-container-text span {
+    margin-right: 200px;
+}
+
+.recent-movie-card {
+    margin: 10px;
+    width: 100vw;
+    border-radius: 5px;
+    height: 45vh;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    cursor: pointer;
+}
+
+.recent-movie-card-img {
+    height: inherit;
+    border-radius: 5px 0 0 5px;
+}
+
+.recent-movie-card:hover {
+    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+
+#dotButtonContainer {
+    position: absolute;
+    display: flex;
+    width: fit-content;
+    justify-content: end;
+    align-items: center;
+    height: 30px;
+    bottom: 10px;
+    right: 2vw;
+}
+
+.list-button {
+    margin: 3px;
+    height: 10px;
+    width: 10px;
+    border: none;
+    background: lightgray;
+    border-radius: 50%;
+    cursor: pointer;
+}

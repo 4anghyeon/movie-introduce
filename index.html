@@ -7,6 +7,8 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>영화 소개 페이지</title>
         <script defer src="index.js" ></script>
+        <link rel="stylesheet" href="recently-movie.css" />
+        <link rel="stylesheet" href="popular-movie.css" />
         <link rel="stylesheet" href="index.css" />
     </head>
     <body>
@@ -15,7 +17,15 @@
             <article>
                 <!-- 최신 영화 표시-->
                 <div id="recentMovieContainer"></div>
-                <ul id="sliderButtonContainer"></ul>
+                <ul id="dotButtonContainer"></ul>
+            </article>
+            <article id="popularMovieArticle">
+                <h1>인기 영화</h1>
+                <div id="popularMovieContainer"></div>
+                <div id="slideButtonContainer">
+                    <button> < </button>
+                    <button> > </button>
+                </div>
             </article>
         </main>
     </body>
