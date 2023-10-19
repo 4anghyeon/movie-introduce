@@ -1,0 +1,34 @@
+#searchResultContainer {
+    display: flex;
+    flex-flow: wrap;
+    width: 100%;
+
+}
+
+#searchResultContainer div:not(.no-result) {
+    width: calc(20% - 20px);
+    min-height: 20vh;
+    height: fit-content;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#searchResultContainer img {
+    width: 100%;
+}
+
+.no-result {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 100px;
+    margin: auto;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    text-align: center;
+    font-size: 50px;
+}
+
+@media all and (max-width:1024px) {
+    #searchResultContainer div{
+        width: calc(50% - 20px);
+    }
+}

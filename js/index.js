@@ -7,6 +7,9 @@ const $topRatedMovieContainer = document.getElementById(
 const $modal = document.getElementById("modal");
 const $modalContainer = document.querySelector(".modal-container");
 const $shadow = document.getElementById("shadow");
+const $searchInput = document.getElementById("searchInput");
+const $inputForm = document.getElementById("inputForm");
+const $searchResultContainer = document.getElementById("searchResultContainer");
 
 let recentlyMovieSlideInterval = null;
 let recentlyLastIndex = 0;
@@ -114,13 +117,13 @@ TMDB.getNowPlaying().then((list) => {
 // 인기 영화 호출
 showLoading($popularMovieContainer.parentNode);
 TMDB.getPopular().then((list) => {
-  renderMovieList($popularMovieContainer, list);
+  renderMovieSlideList($popularMovieContainer, list);
 });
 
 // 높은 평점 영화 호출
 showLoading($topRatedMovieContainer.parentNode);
 TMDB.getTopRated().then((list) => {
-  renderMovieList($topRatedMovieContainer, list);
+  renderMovieSlideList($topRatedMovieContainer, list);
 });
 
 // 카드 슬라이더 좌우버튼 이벤트 등록
@@ -175,3 +178,18 @@ document.querySelectorAll(".left-move-button").forEach((elem) => {
     }
   });
 })();
+
+$inputForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchValue = $searchInput.value.trim();
+  $searchResultContainer.innerHTML = "";
+  showLoading($searchResultContainer);
+  if (searchValue === "") {
+    hideSearchResult();
+  } else {
+    TMDB.searchByName(searchValue).then((list) => {
+      renderSearchResultList($searchResultContainer, list);
+    });
+    showSearchResult();
+  }
+});

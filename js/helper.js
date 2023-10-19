@@ -13,7 +13,7 @@ const changeSelectedButtonColor = (order) => {
   });
 };
 
-const renderMovieList = (container, dataList) => {
+const renderMovieSlideList = (container, dataList) => {
   const results = dataList.results;
   if (results) {
     results.forEach((movie) => {
@@ -25,30 +25,7 @@ const renderMovieList = (container, dataList) => {
       moviePosterImg.className = "movie-poster";
       movieCardDiv.append(moviePosterImg);
 
-      movieCardDiv.addEventListener("click", (e) => {
-        console.log(movie.id);
-        showLoading($modalContainer);
-        TMDB.getDetail(movie.id).then((detail) => {
-          if (detail) {
-            console.log(detail);
-            document.getElementById("modalMovieTitle").innerText = detail.title;
-            document.getElementById(
-              "modalMovieImage",
-            ).src = `https://image.tmdb.org/t/p/original/${detail.backdrop_path}`;
-            document.getElementById("modalMovieOverview").innerText =
-              detail.overview;
-            document.getElementById("modalMovieShort").innerText =
-              detail.tagline || detail.original_title;
-            document.getElementById("modalMovieRating").innerText =
-              detail.vote_average;
-            document.getElementById("modalMovieDate").innerText =
-              detail.release_date;
-          }
-          hideLoading($modalContainer);
-        });
-        // document.getElementById("modalMovieTitle").innerText =
-        showModal();
-      });
+      addDetailClickEventListener(movieCardDiv, movie);
 
       container.append(movieCardDiv);
     });
@@ -60,6 +37,59 @@ const renderMovieList = (container, dataList) => {
     elem.style.margin = `10px ${
       window.innerWidth - document.body.clientWidth + 10
     }px 10px 10px`;
+  });
+};
+
+const renderSearchResultList = (container, dataList) => {
+  const results = dataList.results;
+  if (results) {
+    if (results.length > 0) {
+      results
+        .filter((movie) => movie.poster_path && movie.backdrop_path)
+        .forEach((movie) => {
+          const movieCardDiv = document.createElement("div");
+          const moviePosterImg = document.createElement("img");
+          moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+          movieCardDiv.append(moviePosterImg);
+          moviePosterImg.className = "movie-poster";
+
+          addDetailClickEventListener(movieCardDiv, movie);
+
+          container.append(movieCardDiv);
+        });
+    } else {
+      const warnDiv = document.createElement("div");
+      warnDiv.innerText = "검색 결과가 없습니다.";
+      warnDiv.className = "no-result";
+      container.append(warnDiv);
+    }
+  }
+  hideLoading(container);
+};
+
+// elem: 클릭할 element, movie: movie정보
+const addDetailClickEventListener = (elem, movie) => {
+  elem.addEventListener("click", () => {
+    showLoading($modalContainer);
+    TMDB.getDetail(movie.id).then((detail) => {
+      if (detail) {
+        document.getElementById("modalMovieTitle").innerText = detail.title;
+        document.getElementById(
+          "modalMovieImage",
+        ).src = `https://image.tmdb.org/t/p/original/${detail.backdrop_path}`;
+        document.getElementById("modalMovieOverview").innerText =
+          detail.overview;
+        document.getElementById("modalMovieShort").innerText =
+          detail.tagline || detail.original_title;
+        document.getElementById("modalMovieRating").innerText =
+          detail.vote_average;
+        document.getElementById("modalMovieDate").innerText =
+          detail.release_date;
+      }
+      hideLoading($modalContainer);
+    });
+    // document.getElementById("modalMovieTitle").innerText =
+    showModal();
   });
 };
 
@@ -106,4 +136,18 @@ const checkShowingRightMoveButton = (elem, index) => {
   if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE)
     buttonSwitch(elem, "off");
   else buttonSwitch(elem, "on");
+};
+
+const showSearchResult = () => {
+  document
+    .querySelectorAll(".movie-main")
+    .forEach((elem) => (elem.style.display = "none"));
+  $searchResultContainer.style.display = "flex";
+};
+
+const hideSearchResult = () => {
+  document
+    .querySelectorAll(".movie-main")
+    .forEach((elem) => (elem.style.display = "block"));
+  $searchResultContainer.style.display = "none";
 };

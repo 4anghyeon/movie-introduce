@@ -11,19 +11,22 @@
         <script defer src="js/index.js" ></script>
         <link rel="stylesheet" href="css/recently-movie.css" />
         <link rel="stylesheet" href="css/popular-movie.css" />
+        <link rel="stylesheet" href="css/search-result.css" />
         <link rel="stylesheet" href="css/index.css" />
     </head>
     <body>
         <header class="header">
-            <input placeholder="제목으로 검색하세요" />
+            <form id="inputForm">
+                <input type="text" id="searchInput" placeholder="제목으로 검색하세요" />
+            </form>
         </header>
         <main>
-            <article>
+            <article class="movie-main">
                 <!-- 최신 영화 표시-->
                 <div id="recentMovieContainer"></div>
                 <ul id="dotButtonContainer"></ul>
             </article>
-            <article id="popularMovieArticle" class="card-slide-article">
+            <article id="popularMovieArticle" class="card-slide-article movie-main">
                 <h1>사용자가 주목하는 영화</h1>
                 <div id="popularMovieContainer" class="card-slide-container"></div>
                 <div id="popularSlideButtonContainer" class="card-slider-button-container">
@@ -31,12 +34,16 @@
                     <button class="right-move-button"> > </button>
                 </div>
             </article>
-            <article id="topRatedMovieArticle" class="card-slide-article">
+            <article id="topRatedMovieArticle" class="card-slide-article movie-main">
                 <h1>높은 평점의 영화</h1>
                 <div id="topRatedMovieContainer" class="card-slide-container"></div>
                 <div id="topRatedSlideButtonContainer" class="card-slider-button-container">
                     <button class="left-move-button"> < </button>
                     <button class="right-move-button"> > </button>
+                </div>
+            </article>
+            <article>
+                <div id="searchResultContainer" style="min-height: 90vh;">
                 </div>
             </article>
             <div id="modal">

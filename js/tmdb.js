@@ -44,4 +44,13 @@ class TMDB {
       .then((response) => response.json())
       .catch((err) => console.error(err));
   }
+
+  static searchByName(name) {
+    return fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=ko-KR&page=1&region=KR`,
+      this.options,
+    )
+      .then((response) => response.json())
+      .catch((err) => console.error(err));
+  }
 }

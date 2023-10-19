@@ -22,19 +22,22 @@ ul {
 }
 
 .header {
+
+}
+
+.header form {
     display: flex;
     justify-content: center;
-    height: 8vh;
-    width: 99%;
-    margin-top: 10px;
-    margin-left: 10px;
+    width: 100%;
 }
 
 .header input {
-    width: 100%;
+    width: inherit;
+    height: 40px;
     border: 1px solid lightblue;
     border-radius: 10px;
-    padding: 30px;
+    padding: 20px 20px 20px 50px;
+    margin: 10px 10px 0 10px;
     font-size: 2rem;
     font-family: 'IBM Plex Sans KR', sans-serif;
     background: rgba(255, 255, 255, 0.7);
