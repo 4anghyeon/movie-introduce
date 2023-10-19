@@ -11,12 +11,13 @@ const $searchInput = document.getElementById("searchInput");
 const $inputForm = document.getElementById("inputForm");
 const $searchResultContainer = document.getElementById("searchResultContainer");
 
-let recentlyMovieSlideInterval = null;
-let recentlyLastIndex = 0;
 const CARD_IMAGE_SIZE = 15;
 const IMAGE_PADDING_SIZE = 10;
 const MAX_CARD_CONTAINER_SIZE =
   CARD_IMAGE_SIZE * 20 + IMAGE_PADDING_SIZE * 3 - 100;
+
+let recentlyMovieSlideInterval = null;
+let recentlyLastIndex = 0;
 
 // 최신 영화 호출
 showLoading($recentMovieContainer);

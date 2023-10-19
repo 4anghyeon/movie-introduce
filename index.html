@@ -43,27 +43,27 @@
                 </div>
             </article>
             <article>
-                <div id="searchResultContainer" style="min-height: 90vh;">
+                <div id="searchResultContainer" style="min-height: 90vh; display: none">
                 </div>
             </article>
-            <div id="modal">
-                <header class="modal-title">
-                    <h1 id="modalMovieTitle"></h1>
-                    <button onclick="hideModal()">X</button>
-                </header>
-                <div class="modal-container">
-                    <div>
-                        <img id="modalMovieImage" alt="movie image" src=""/>
-                        <div style="display: flex">
-                            <span>⭐️ 평점:<span id="modalMovieRating"></span>/ 10</span>
-                            <span>🗓️ 개봉일:<span id="modalMovieDate"></span></span>
-                        </div>
-                        <h3 id="modalMovieShort"></h3>
-                        <p id="modalMovieOverview"></p>
+        </main>
+        <div id="modal">
+            <header class="modal-title">
+                <h1 id="modalMovieTitle"></h1>
+                <button onclick="hideModal()">X</button>
+            </header>
+            <div class="modal-container">
+                <div>
+                    <img id="modalMovieImage" alt="movie image" src=""/>
+                    <div style="display: flex">
+                        <span>⭐️ 평점:<span id="modalMovieRating"></span>/ 10</span>
+                        <span>🗓️ 개봉일:<span id="modalMovieDate"></span></span>
                     </div>
+                    <h3 id="modalMovieShort"></h3>
+                    <p id="modalMovieOverview"></p>
                 </div>
             </div>
-            <div id="shadow"></div>
-        </main>
+        </div>
+        <div id="shadow"></div>
     </body>
 </html>
