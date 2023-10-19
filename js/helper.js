@@ -4,25 +4,25 @@ const moveElementByWidth = (elem, width) => {
 };
 
 // 최신 영화 슬라이드 버튼 클릭시 색상 변화
-const changeSelectedButtonColor = (order) => {
-  document.querySelectorAll(".list-button").forEach((elem) => {
-    const elemOrder = elem.getAttribute("order");
+const changeSelectedButtonColor = order => {
+  document.querySelectorAll('.list-button').forEach(elem => {
+    const elemOrder = elem.getAttribute('order');
     if (order === +elemOrder) {
-      elem.classList.add("bg-black");
-    } else elem.classList.remove("bg-black");
+      elem.classList.add('bg-black');
+    } else elem.classList.remove('bg-black');
   });
 };
 
 const renderMovieSlideList = (container, dataList) => {
   const results = dataList.results;
   if (results) {
-    results.forEach((movie) => {
-      const movieCardDiv = document.createElement("div");
-      const moviePosterImg = document.createElement("img");
+    results.forEach(movie => {
+      const movieCardDiv = document.createElement('div');
+      const moviePosterImg = document.createElement('img');
       movieCardDiv.style.width = `${CARD_IMAGE_SIZE}vw`;
       movieCardDiv.style.padding = `${IMAGE_PADDING_SIZE}px`;
       moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
-      moviePosterImg.className = "movie-poster";
+      moviePosterImg.className = 'movie-poster';
       movieCardDiv.append(moviePosterImg);
 
       addDetailClickEventListener(movieCardDiv, movie);
@@ -33,10 +33,8 @@ const renderMovieSlideList = (container, dataList) => {
   }
 
   // scrollbar가 생길경우 최신 영화 카드 margin 조절..
-  document.querySelectorAll(".recent-movie-card").forEach((elem) => {
-    elem.style.margin = `10px ${
-      window.innerWidth - document.body.clientWidth + 10
-    }px 10px 10px`;
+  document.querySelectorAll('.recent-movie-card').forEach(elem => {
+    elem.style.margin = `10px ${window.innerWidth - document.body.clientWidth + 10}px 10px 10px`;
   });
 };
 
@@ -45,22 +43,22 @@ const renderSearchResultList = (container, dataList) => {
   if (results) {
     if (results.length > 0) {
       results
-        .filter((movie) => movie.poster_path && movie.backdrop_path)
-        .forEach((movie) => {
-          const movieCardDiv = document.createElement("div");
-          const moviePosterImg = document.createElement("img");
+        .filter(movie => movie.poster_path && movie.backdrop_path)
+        .forEach(movie => {
+          const movieCardDiv = document.createElement('div');
+          const moviePosterImg = document.createElement('img');
           moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
           movieCardDiv.append(moviePosterImg);
-          moviePosterImg.className = "movie-poster";
+          moviePosterImg.className = 'movie-poster';
 
           addDetailClickEventListener(movieCardDiv, movie);
 
           container.append(movieCardDiv);
         });
     } else {
-      const warnDiv = document.createElement("div");
-      warnDiv.innerText = "검색 결과가 없습니다.";
-      warnDiv.className = "no-result";
+      const warnDiv = document.createElement('div');
+      warnDiv.innerText = '검색 결과가 없습니다.';
+      warnDiv.className = 'no-result';
       container.append(warnDiv);
     }
   }
@@ -69,22 +67,16 @@ const renderSearchResultList = (container, dataList) => {
 
 // elem: 클릭할 element, movie: movie정보
 const addDetailClickEventListener = (elem, movie) => {
-  elem.addEventListener("click", () => {
+  elem.addEventListener('click', () => {
     showLoading($modalContainer);
-    TMDB.getDetail(movie.id).then((detail) => {
+    TMDB.getDetail(movie.id).then(detail => {
       if (detail) {
-        document.getElementById("modalMovieTitle").innerText = detail.title;
-        document.getElementById(
-          "modalMovieImage",
-        ).src = `https://image.tmdb.org/t/p/original/${detail.backdrop_path}`;
-        document.getElementById("modalMovieOverview").innerText =
-          detail.overview;
-        document.getElementById("modalMovieShort").innerText =
-          detail.tagline || detail.original_title;
-        document.getElementById("modalMovieRating").innerText =
-          detail.vote_average;
-        document.getElementById("modalMovieDate").innerText =
-          detail.release_date;
+        document.getElementById('modalMovieTitle').innerText = detail.title;
+        document.getElementById('modalMovieImage').src = `https://image.tmdb.org/t/p/original/${detail.backdrop_path}`;
+        document.getElementById('modalMovieOverview').innerText = detail.overview;
+        document.getElementById('modalMovieShort').innerText = detail.tagline || detail.original_title;
+        document.getElementById('modalMovieRating').innerText = detail.vote_average;
+        document.getElementById('modalMovieDate').innerText = detail.release_date;
       }
       hideLoading($modalContainer);
     });
@@ -94,60 +86,55 @@ const addDetailClickEventListener = (elem, movie) => {
 };
 
 const buttonSwitch = (elem, power) => {
-  if (power === "on") {
-    elem.style.zIndex = "5";
-    elem.style.opacity = "1";
+  if (power === 'on') {
+    elem.style.zIndex = '5';
+    elem.style.opacity = '1';
   } else {
-    elem.style.zIndex = "-99";
-    elem.style.opacity = "0";
+    elem.style.zIndex = '-99';
+    elem.style.opacity = '0';
   }
 };
 
 const showModal = () => {
-  $modal.style.opacity = "1";
-  $modal.style.zIndex = "999";
-  $shadow.style.opacity = "1";
-  $shadow.style.zIndex = "98";
+  $modal.style.opacity = '1';
+  $modal.style.zIndex = '999';
+  $shadow.style.opacity = '1';
+  $shadow.style.zIndex = '98';
 };
 
 const hideModal = () => {
-  $modal.style.opacity = "0";
-  $modal.style.zIndex = "-999";
-  $shadow.style.opacity = "0";
-  $shadow.style.zIndex = "-99";
+  $modal.style.opacity = '0';
+  $modal.style.zIndex = '-999';
+  $shadow.style.opacity = '0';
+  $shadow.style.zIndex = '-99';
 };
 
-const showLoading = (elem) => {
-  elem.classList.add("spin");
-  elem.parentElement.classList.add("spin-bg");
+const showLoading = elem => {
+  elem.classList.add('spin');
+  elem.parentElement.classList.add('spin-bg');
 };
 
-const hideLoading = (elem) => {
-  elem.classList.remove("spin");
-  elem.parentElement.classList.remove("spin-bg");
+const hideLoading = elem => {
+  elem.classList.remove('spin');
+  elem.parentElement.classList.remove('spin-bg');
 };
 
 const checkShowingLeftMoveButton = (elem, index) => {
-  if (index <= 0) buttonSwitch(elem, "off");
-  else buttonSwitch(elem, "on");
+  if (index <= 0) buttonSwitch(elem, 'off');
+  else buttonSwitch(elem, 'on');
 };
 
 const checkShowingRightMoveButton = (elem, index) => {
-  if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE)
-    buttonSwitch(elem, "off");
-  else buttonSwitch(elem, "on");
+  if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE) buttonSwitch(elem, 'off');
+  else buttonSwitch(elem, 'on');
 };
 
 const showSearchResult = () => {
-  document
-    .querySelectorAll(".movie-main")
-    .forEach((elem) => (elem.style.display = "none"));
-  $searchResultContainer.style.display = "flex";
+  document.querySelectorAll('.movie-main').forEach(elem => (elem.style.display = 'none'));
+  $searchResultContainer.style.display = 'flex';
 };
 
 const hideSearchResult = () => {
-  document
-    .querySelectorAll(".movie-main")
-    .forEach((elem) => (elem.style.display = "block"));
-  $searchResultContainer.style.display = "none";
+  document.querySelectorAll('.movie-main').forEach(elem => (elem.style.display = 'block'));
+  $searchResultContainer.style.display = 'none';
 };
