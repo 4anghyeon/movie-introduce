@@ -6,6 +6,7 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>영화 소개 페이지</title>
+        <script defer src="tmdb.js" ></script>
         <script defer src="index.js" ></script>
         <link rel="stylesheet" href="recently-movie.css" />
         <link rel="stylesheet" href="popular-movie.css" />
@@ -19,10 +20,18 @@
                 <div id="recentMovieContainer"></div>
                 <ul id="dotButtonContainer"></ul>
             </article>
-            <article id="popularMovieArticle">
-                <h1>인기 영화</h1>
-                <div id="popularMovieContainer"></div>
-                <div id="slideButtonContainer">
+            <article id="popularMovieArticle" class="card-slide-article">
+                <h1>사용자가 주목하는 영화</h1>
+                <div id="popularMovieContainer" class="card-slide-container"></div>
+                <div id="popularSlideButtonContainer" class="card-slider-button-container">
+                    <button class="left-move-button"> < </button>
+                    <button class="right-move-button"> > </button>
+                </div>
+            </article>
+            <article id="topRatedMovieArticle" class="card-slide-article">
+                <h1>높은 평점의 영화</h1>
+                <div id="topRatedMovieContainer" class="card-slide-container"></div>
+                <div id="topRatedSlideButtonContainer" class="card-slider-button-container">
                     <button class="left-move-button"> < </button>
                     <button class="right-move-button"> > </button>
                 </div>

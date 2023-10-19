@@ -1,4 +1,4 @@
-#popularMovieContainer {
+.card-slide-container {
     position: relative;
     width: 100vw;
     display: flex;
@@ -6,7 +6,7 @@
     transition: ease 1s;
 }
 
-#slideButtonContainer {
+.card-slider-button-container {
     position: absolute;
     width: 100%;
     display: flex;
@@ -14,7 +14,7 @@
     bottom: 35%;
 }
 
-#slideButtonContainer button {
+.card-slider-button-container button {
     width: 50px;
     height: 70px;
     font-size: 4rem;
@@ -27,12 +27,12 @@
     text-align: center;
 }
 
-#slideButtonContainer button:hover {
+.card-slider-button-container button:hover {
     background: rgba(33, 37, 41, 0.42);
 }
 
-#popularMovieArticle h1 {
-    margin: 10px 10px 0 10px;
+.card-slide-article h1 {
+    margin: 10px 10px 0 20px;
     font-size: 1.7rem;
     color: #343a40;
     font-family: 'IBM Plex Sans KR', sans-serif;

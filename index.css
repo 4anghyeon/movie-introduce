@@ -31,3 +31,8 @@ ul {
 .bg-black {
     background: #212529;
 }
+
+.resize-animation-stopper * {
+    animation: none !important;
+    transition: none !important;
+}

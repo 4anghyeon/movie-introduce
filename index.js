@@ -1,41 +1,16 @@
 const $recentMovieContainer = document.getElementById("recentMovieContainer");
 const $dotButtonContainer = document.getElementById("dotButtonContainer");
 const $popularMovieContainer = document.getElementById("popularMovieContainer");
+const $topRatedMovieContainer = document.getElementById(
+  "topRatedMovieContainer",
+);
 
 let recentlyMovieSlideInterval = null;
 let recentlyLastIndex = 0;
-let cardImageSize = 20;
-let maxCardContainerSize = cardImageSize * 20 - 100;
-
-// TMDB 관련 옵션 정의 클래스
-class TMDB {
-  static options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZmU1YjVmNWQxMGQ3NDk2MTdkZjg4ZGYyNDdlNmVkYiIsInN1YiI6IjY1MmYzZWMwMGNiMzM1MTZmODg1M2ExMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IuvgiTvQ4pgT5FDbyv973bJlmTQ-FwDfRw2TrmMm-ws",
-    },
-  };
-
-  static getNowPlaying() {
-    return fetch(
-      "https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&region=KR&page=1",
-      this.options,
-    )
-      .then((response) => response.json())
-      .catch((err) => console.error(err));
-  }
-
-  static getPopular() {
-    return fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&region=KR&page=1",
-      this.options,
-    )
-      .then((response) => response.json())
-      .catch((err) => console.error(err));
-  }
-}
+const CARD_IMAGE_SIZE = 20;
+const IMAGE_PADDING_SIZE = 10;
+const MAX_CARD_CONTAINER_SIZE =
+  CARD_IMAGE_SIZE * 20 + IMAGE_PADDING_SIZE * 3 - 100;
 
 // div를 움직이게 하는 함수
 const moveElementByWidth = (elem, width) => {
@@ -54,11 +29,11 @@ const changeSelectedButtonColor = (order) => {
 
 const buttonSwitch = (elem, power) => {
   if (power === "on") {
-    elem.style.zIndex = 1;
-    elem.style.opacity = 1;
+    elem.style.zIndex = "1";
+    elem.style.opacity = "1";
   } else {
-    elem.style.zIndex = -99;
-    elem.style.opacity = 0;
+    elem.style.zIndex = "-99";
+    elem.style.opacity = "0";
   }
 };
 
@@ -157,56 +132,64 @@ TMDB.getNowPlaying().then((list) => {
 
 // 인기 영화 호출
 TMDB.getPopular().then((list) => {
-  const results = list.results;
+  renderMovieList($popularMovieContainer, list);
+});
+
+// 높은 평점 영화 호출
+TMDB.getTopRated().then((list) => {
+  renderMovieList($topRatedMovieContainer, list);
+});
+
+const renderMovieList = (container, dataList) => {
+  const results = dataList.results;
   if (results) {
     results.forEach((movie) => {
       const movieCardDiv = document.createElement("div");
       const moviePosterImg = document.createElement("img");
-      movieCardDiv.style.width = `${cardImageSize}vw`;
+      movieCardDiv.style.width = `${CARD_IMAGE_SIZE}vw`;
+      movieCardDiv.style.padding = `${IMAGE_PADDING_SIZE}px`;
       moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
       moviePosterImg.className = "movie-poster";
       movieCardDiv.append(moviePosterImg);
-      $popularMovieContainer.append(movieCardDiv);
-    });
-
-    document.querySelectorAll(".right-move-button").forEach((elem) => {
-      elem.addEventListener("click", (e) => {
-        let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
-        e.target.parentNode.setAttribute("index", ++cardLastIndex);
-
-        const parentNode = e.target.parentNode.parentNode.children[1];
-
-        moveElementByWidth(
-          parentNode,
-          `${Math.max(
-            -cardImageSize * cardLastIndex,
-            -maxCardContainerSize,
-          )}vw`,
-        );
-
-        checkShowingLeftMoveButton(
-          e.target.previousElementSibling,
-          cardLastIndex,
-        );
-
-        checkShowingRightMoveButton(e.target, cardLastIndex);
-      });
-    });
-
-    document.querySelectorAll(".left-move-button").forEach((elem) => {
-      elem.addEventListener("click", (e) => {
-        let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
-        e.target.parentNode.setAttribute("index", --cardLastIndex);
-
-        const parentNode = e.target.parentNode.parentNode.children[1];
-
-        moveElementByWidth(parentNode, `${-cardImageSize * cardLastIndex}vw`);
-
-        checkShowingLeftMoveButton(e.target, cardLastIndex);
-        checkShowingRightMoveButton(e.target.nextElementSibling, cardLastIndex);
-      });
+      container.append(movieCardDiv);
     });
   }
+};
+
+// 카드 슬라이더 좌우버튼 이벤트 등록
+document.querySelectorAll(".right-move-button").forEach((elem) => {
+  elem.addEventListener("click", (e) => {
+    let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
+    e.target.parentNode.setAttribute("index", ++cardLastIndex);
+
+    const parentNode = e.target.parentNode.parentNode.children[1];
+
+    moveElementByWidth(
+      parentNode,
+      `${Math.max(
+        -CARD_IMAGE_SIZE * cardLastIndex,
+        -MAX_CARD_CONTAINER_SIZE,
+      )}vw`,
+    );
+
+    checkShowingLeftMoveButton(e.target.previousElementSibling, cardLastIndex);
+
+    checkShowingRightMoveButton(e.target, cardLastIndex);
+  });
+});
+
+document.querySelectorAll(".left-move-button").forEach((elem) => {
+  elem.addEventListener("click", (e) => {
+    let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
+    e.target.parentNode.setAttribute("index", --cardLastIndex);
+
+    const parentNode = e.target.parentNode.parentNode.children[1];
+
+    moveElementByWidth(parentNode, `${-CARD_IMAGE_SIZE * cardLastIndex}vw`);
+
+    checkShowingLeftMoveButton(e.target, cardLastIndex);
+    checkShowingRightMoveButton(e.target.nextElementSibling, cardLastIndex);
+  });
 });
 
 const checkShowingLeftMoveButton = (elem, index) => {
@@ -215,27 +198,19 @@ const checkShowingLeftMoveButton = (elem, index) => {
 };
 
 const checkShowingRightMoveButton = (elem, index) => {
-  if (-cardImageSize * index <= -maxCardContainerSize)
+  if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE)
     buttonSwitch(elem, "off");
   else buttonSwitch(elem, "on");
 };
 
-// window.addEventListener(
-//   "resize",
-//   function (event) {
-//     let cardLastIndex =
-//       document.getElementById("slideButtonContainer").getAttribute("index") ??
-//       0;
-//
-//     console.log(cardLastIndex);
-//
-//     const parentNode = $popularMovieContainer.parentNode.children[1];
-//     const parentNodeActualWidth = 270 * 14;
-//
-//     moveElementByWidth(
-//       parentNode,
-//       `${Math.max(-300 * cardLastIndex, -parentNodeActualWidth)}px`,
-//     );
-//   },
-//   true,
-// );
+// 창 크기 조정시에는 transition stop!!
+(function () {
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    document.body.classList.add("resize-animation-stopper");
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      document.body.classList.remove("resize-animation-stopper");
+    }, 400);
+  });
+})();
