@@ -4,7 +4,8 @@ const $popularMovieContainer = document.getElementById("popularMovieContainer");
 
 let recentlyMovieSlideInterval = null;
 let recentlyLastIndex = 0;
-let popularLastIndex = 0;
+let cardImageSize = 20;
+let maxCardContainerSize = cardImageSize * 20 - 100;
 
 // TMDB 관련 옵션 정의 클래스
 class TMDB {
@@ -161,12 +162,12 @@ TMDB.getPopular().then((list) => {
     results.forEach((movie) => {
       const movieCardDiv = document.createElement("div");
       const moviePosterImg = document.createElement("img");
+      movieCardDiv.style.width = `${cardImageSize}vw`;
       moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
       moviePosterImg.className = "movie-poster";
       movieCardDiv.append(moviePosterImg);
       $popularMovieContainer.append(movieCardDiv);
     });
-    $popularMovieContainer.style.width = `${results.length * 200}px`;
 
     document.querySelectorAll(".right-move-button").forEach((elem) => {
       elem.addEventListener("click", (e) => {
@@ -174,13 +175,13 @@ TMDB.getPopular().then((list) => {
         e.target.parentNode.setAttribute("index", ++cardLastIndex);
 
         const parentNode = e.target.parentNode.parentNode.children[1];
-        const parentNodeActualWidth =
-          parentNode.getBoundingClientRect().width - window.innerWidth * 0.75;
 
-        console.log(-300 * cardLastIndex, -parentNodeActualWidth);
         moveElementByWidth(
           parentNode,
-          `${Math.max(-300 * cardLastIndex, -parentNodeActualWidth)}px`,
+          `${Math.max(
+            -cardImageSize * cardLastIndex,
+            -maxCardContainerSize,
+          )}vw`,
         );
 
         checkShowingLeftMoveButton(
@@ -188,11 +189,7 @@ TMDB.getPopular().then((list) => {
           cardLastIndex,
         );
 
-        checkShowingRightMoveButton(
-          e.target,
-          cardLastIndex,
-          parentNodeActualWidth,
-        );
+        checkShowingRightMoveButton(e.target, cardLastIndex);
       });
     });
 
@@ -202,30 +199,43 @@ TMDB.getPopular().then((list) => {
         e.target.parentNode.setAttribute("index", --cardLastIndex);
 
         const parentNode = e.target.parentNode.parentNode.children[1];
-        const parentNodeActualWidth =
-          parentNode.getBoundingClientRect().width - 1000;
 
-        moveElementByWidth(parentNode, `${-300 * cardLastIndex}px`);
+        moveElementByWidth(parentNode, `${-cardImageSize * cardLastIndex}vw`);
 
         checkShowingLeftMoveButton(e.target, cardLastIndex);
-        checkShowingRightMoveButton(
-          e.target.nextElementSibling,
-          cardLastIndex,
-          parentNodeActualWidth,
-        );
+        checkShowingRightMoveButton(e.target.nextElementSibling, cardLastIndex);
       });
     });
   }
 });
 
 const checkShowingLeftMoveButton = (elem, index) => {
-  console.log(index);
   if (index <= 0) buttonSwitch(elem, "off");
   else buttonSwitch(elem, "on");
 };
 
-const checkShowingRightMoveButton = (elem, index, parentWidth) => {
-  console.log(index, parentWidth);
-  if (-300 * index <= -parentWidth) buttonSwitch(elem, "off");
+const checkShowingRightMoveButton = (elem, index) => {
+  if (-cardImageSize * index <= -maxCardContainerSize)
+    buttonSwitch(elem, "off");
   else buttonSwitch(elem, "on");
 };
+
+// window.addEventListener(
+//   "resize",
+//   function (event) {
+//     let cardLastIndex =
+//       document.getElementById("slideButtonContainer").getAttribute("index") ??
+//       0;
+//
+//     console.log(cardLastIndex);
+//
+//     const parentNode = $popularMovieContainer.parentNode.children[1];
+//     const parentNodeActualWidth = 270 * 14;
+//
+//     moveElementByWidth(
+//       parentNode,
+//       `${Math.max(-300 * cardLastIndex, -parentNodeActualWidth)}px`,
+//     );
+//   },
+//   true,
+// );

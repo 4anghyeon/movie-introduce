@@ -1,6 +1,6 @@
 #popularMovieContainer {
     position: relative;
-
+    width: 100vw;
     display: flex;
     min-height: 30vh;
     transition: ease 1s;
@@ -39,7 +39,7 @@
 }
 
 .movie-poster {
-    width: 200px;
+    width: inherit;
     margin: 10px;
     border-radius: 5px;
 }
