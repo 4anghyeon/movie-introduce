@@ -35,4 +35,13 @@ class TMDB {
       .then((response) => response.json())
       .catch((err) => console.error(err));
   }
+
+  static getDetail(id) {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
+      this.options,
+    )
+      .then((response) => response.json())
+      .catch((err) => console.error(err));
+  }
 }

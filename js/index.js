@@ -4,40 +4,19 @@ const $popularMovieContainer = document.getElementById("popularMovieContainer");
 const $topRatedMovieContainer = document.getElementById(
   "topRatedMovieContainer",
 );
+const $modal = document.getElementById("modal");
+const $modalContainer = document.querySelector(".modal-container");
+const $shadow = document.getElementById("shadow");
 
 let recentlyMovieSlideInterval = null;
 let recentlyLastIndex = 0;
-const CARD_IMAGE_SIZE = 20;
+const CARD_IMAGE_SIZE = 15;
 const IMAGE_PADDING_SIZE = 10;
 const MAX_CARD_CONTAINER_SIZE =
   CARD_IMAGE_SIZE * 20 + IMAGE_PADDING_SIZE * 3 - 100;
 
-// div를 움직이게 하는 함수
-const moveElementByWidth = (elem, width) => {
-  elem.style.transform = `translate3d(${width}, 0px, 0px)`;
-};
-
-// 최신 영화 슬라이드 버튼 클릭시 색상 변화
-const changeSelectedButtonColor = (order) => {
-  document.querySelectorAll(".list-button").forEach((elem) => {
-    const elemOrder = elem.getAttribute("order");
-    if (order === +elemOrder) {
-      elem.classList.add("bg-black");
-    } else elem.classList.remove("bg-black");
-  });
-};
-
-const buttonSwitch = (elem, power) => {
-  if (power === "on") {
-    elem.style.zIndex = "1";
-    elem.style.opacity = "1";
-  } else {
-    elem.style.zIndex = "-99";
-    elem.style.opacity = "0";
-  }
-};
-
 // 최신 영화 호출
+showLoading($recentMovieContainer);
 TMDB.getNowPlaying().then((list) => {
   const results = list.results.slice(0, 15);
 
@@ -72,7 +51,7 @@ TMDB.getNowPlaying().then((list) => {
             recentlyLastIndex + 1 >= resultLength ? 0 : recentlyLastIndex,
           );
         }
-      }, 3000);
+      }, 3000000);
     };
 
     // 카드를 포함하는 박스에 마우스를 올려놓을시 Interval 제거
@@ -128,33 +107,21 @@ TMDB.getNowPlaying().then((list) => {
     $recentMovieContainer.append(firstMovie); // 마지막에 첫번째 영화 하나 추가 (무한 루프처럼 보이게 하기 위해)
     recentlyMovieSlideInterval = cardMoveInterval(); // 처음 인터벌 시작
   }
+
+  hideLoading($recentMovieContainer);
 });
 
 // 인기 영화 호출
+showLoading($popularMovieContainer.parentNode);
 TMDB.getPopular().then((list) => {
   renderMovieList($popularMovieContainer, list);
 });
 
 // 높은 평점 영화 호출
+showLoading($topRatedMovieContainer.parentNode);
 TMDB.getTopRated().then((list) => {
   renderMovieList($topRatedMovieContainer, list);
 });
-
-const renderMovieList = (container, dataList) => {
-  const results = dataList.results;
-  if (results) {
-    results.forEach((movie) => {
-      const movieCardDiv = document.createElement("div");
-      const moviePosterImg = document.createElement("img");
-      movieCardDiv.style.width = `${CARD_IMAGE_SIZE}vw`;
-      movieCardDiv.style.padding = `${IMAGE_PADDING_SIZE}px`;
-      moviePosterImg.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
-      moviePosterImg.className = "movie-poster";
-      movieCardDiv.append(moviePosterImg);
-      container.append(movieCardDiv);
-    });
-  }
-};
 
 // 카드 슬라이더 좌우버튼 이벤트 등록
 document.querySelectorAll(".right-move-button").forEach((elem) => {
@@ -173,7 +140,6 @@ document.querySelectorAll(".right-move-button").forEach((elem) => {
     );
 
     checkShowingLeftMoveButton(e.target.previousElementSibling, cardLastIndex);
-
     checkShowingRightMoveButton(e.target, cardLastIndex);
   });
 });
@@ -192,19 +158,8 @@ document.querySelectorAll(".left-move-button").forEach((elem) => {
   });
 });
 
-const checkShowingLeftMoveButton = (elem, index) => {
-  if (index <= 0) buttonSwitch(elem, "off");
-  else buttonSwitch(elem, "on");
-};
-
-const checkShowingRightMoveButton = (elem, index) => {
-  if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE)
-    buttonSwitch(elem, "off");
-  else buttonSwitch(elem, "on");
-};
-
-// 창 크기 조정시에는 transition stop!!
 (function () {
+  // 창 크기 조정시에는 transition stop!!
   let resizeTimer;
   window.addEventListener("resize", () => {
     document.body.classList.add("resize-animation-stopper");
@@ -212,5 +167,11 @@ const checkShowingRightMoveButton = (elem, index) => {
     resizeTimer = setTimeout(() => {
       document.body.classList.remove("resize-animation-stopper");
     }, 400);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "shadow") {
+      hideModal();
+    }
   });
 })();

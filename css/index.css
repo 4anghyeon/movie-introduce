@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@500&family=Noto+Sans+KR:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@500;700&family=Noto+Sans+KR:wght@900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url("../assets/background.svg");
+    box-sizing: border-box;
+}
+
+article {
+    overflow-x: hidden;
+    position: relative;
+}
+
+ul {
+    list-style: none;
+    margin-left: 0;
+    margin-block-start: 0;
+    padding-inline-start: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    height: 8vh;
+    width: 99%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.header input {
+    width: 100%;
+    border: 1px solid lightblue;
+    border-radius: 10px;
+    padding: 30px;
+    font-size: 2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    background: rgba(255, 255, 255, 0.7);
+    caret-color: black;
+}
+
+input::placeholder {
+    color: black;
+    opacity: 1; /* Firefox */
+}
+
+
+.bg-black {
+    background: #212529;
+}
+
+.resize-animation-stopper * {
+    animation: none !important;
+    transition: none !important;
+}
+
+#modal {
+    width: 50vw;
+    height: 80vh;
+    background: white;
+    position: fixed;
+    display: block;
+    z-index: -999;
+    opacity: 0;
+    top: 10vh;
+    left: 25vw;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    overflow-y: auto;
+}
+
+#shadow {
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255, 0.5);
+    position: fixed;
+    display: block;
+    z-index: -999;
+    opacity: 0;
+    top: 0;
+    left:0;
+}
+
+#modal h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    padding-left: 20px;
+    margin: 10px 0 10px 0;
+}
+
+.modal-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-title button {
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    margin: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-container {
+    display: flex;
+}
+
+.modal-container span {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    padding: 10px 0 10px 30px;
+}
+
+.modal-container p {
+    padding: 0 30px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.modal-container h3 {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 30px ;
+    padding-left: 30px;
+    margin: 5px;
+}
+
+.modal-container img {
+    width: 100%;
+}
+
+@keyframes spinner {
+    0% {
+        transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
+}
+/*.spin {*/
+/*    background: red;*/
+/*}*/
+.spin-bg::before {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255,255,0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+}
+
+.spin::before {
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #cfd0d1;
+    border-bottom-color: #1c87c9;
+    border-radius: 50%;
+    content: "";
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+}

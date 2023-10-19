@@ -4,6 +4,7 @@
     display: flex;
     min-height: 30vh;
     transition: ease 1s;
+    z-index: 2;
 }
 
 .card-slider-button-container {
@@ -25,6 +26,7 @@
     transition: all .5s;
     border-radius: 20px;
     text-align: center;
+    z-index: 5;
 }
 
 .card-slider-button-container button:hover {
@@ -42,6 +44,10 @@
     width: inherit;
     margin: 10px;
     border-radius: 5px;
+    cursor: pointer;
+}
+.movie-poster:hover {
+    box-shadow: rgba(3, 67, 140, 1) 0px 0px 0px 3px;
 }
 
 .left-move-button {

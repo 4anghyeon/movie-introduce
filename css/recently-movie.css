@@ -2,6 +2,7 @@
     display: flex;
     min-height: 25vh;
     transition: ease 1s;
+    overflow-y: hidden;
 }
 
 .recent-movie-container {
@@ -29,7 +30,6 @@
 }
 
 .recent-movie-card {
-    margin: 10px;
     width: 100vw;
     border-radius: 5px;
     height: 45vh;

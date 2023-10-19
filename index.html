@@ -6,14 +6,17 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>영화 소개 페이지</title>
-        <script defer src="tmdb.js" ></script>
-        <script defer src="index.js" ></script>
-        <link rel="stylesheet" href="recently-movie.css" />
-        <link rel="stylesheet" href="popular-movie.css" />
-        <link rel="stylesheet" href="index.css" />
+        <script defer src="js/tmdb.js" ></script>
+        <script defer src="js/helper.js" ></script>
+        <script defer src="js/index.js" ></script>
+        <link rel="stylesheet" href="css/recently-movie.css" />
+        <link rel="stylesheet" href="css/popular-movie.css" />
+        <link rel="stylesheet" href="css/index.css" />
     </head>
     <body>
-        <header class="header">헤더입니다</header>
+        <header class="header">
+            <input placeholder="제목으로 검색하세요" />
+        </header>
         <main>
             <article>
                 <!-- 최신 영화 표시-->
@@ -36,6 +39,24 @@
                     <button class="right-move-button"> > </button>
                 </div>
             </article>
+            <div id="modal">
+                <header class="modal-title">
+                    <h1 id="modalMovieTitle"></h1>
+                    <button onclick="hideModal()">X</button>
+                </header>
+                <div class="modal-container">
+                    <div>
+                        <img id="modalMovieImage" alt="movie image" src=""/>
+                        <div style="display: flex">
+                            <span>⭐️ 평점:<span id="modalMovieRating"></span>/ 10</span>
+                            <span>🗓️ 개봉일:<span id="modalMovieDate"></span></span>
+                        </div>
+                        <h3 id="modalMovieShort"></h3>
+                        <p id="modalMovieOverview"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="shadow"></div>
         </main>
     </body>
 </html>
