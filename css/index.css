@@ -21,10 +21,6 @@ ul {
     padding-inline-start: 0;
 }
 
-.header {
-
-}
-
 .header form {
     display: flex;
     justify-content: center;
