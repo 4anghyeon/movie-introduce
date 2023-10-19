@@ -39,7 +39,12 @@
 }
 
 .movie-poster {
-    width: 15vw;
+    width: 200px;
     margin: 10px;
     border-radius: 5px;
+}
+
+.left-move-button {
+    opacity: 0;
+    z-index: -99;
 }

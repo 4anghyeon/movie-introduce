@@ -36,10 +36,9 @@ class TMDB {
   }
 }
 
-// 최신 영화를 왼쪽으로 움직이게 하는 함수
-const moveRecentlyCardByIndex = (elem, width) => {
-  console.log(width);
-  elem.style.transform = `translate3d(${width}vw, 0px, 0px)`;
+// div를 움직이게 하는 함수
+const moveElementByWidth = (elem, width) => {
+  elem.style.transform = `translate3d(${width}, 0px, 0px)`;
 };
 
 // 최신 영화 슬라이드 버튼 클릭시 색상 변화
@@ -50,6 +49,16 @@ const changeSelectedButtonColor = (order) => {
       elem.classList.add("bg-black");
     } else elem.classList.remove("bg-black");
   });
+};
+
+const buttonSwitch = (elem, power) => {
+  if (power === "on") {
+    elem.style.zIndex = 1;
+    elem.style.opacity = 1;
+  } else {
+    elem.style.zIndex = -99;
+    elem.style.opacity = 0;
+  }
 };
 
 // 최신 영화 호출
@@ -71,15 +80,15 @@ TMDB.getNowPlaying().then((list) => {
 
           // [1] [2] [3] ... [N] [1] 순으로 목록이 되어있음. 끝으로 가면 무한 루프처럼 보이기 위해 transisiton 잠시 멈춤
           $recentMovieContainer.style.transition = "ease 0s";
-          moveRecentlyCardByIndex($recentMovieContainer, 0);
+          moveElementByWidth($recentMovieContainer, 0);
           changeSelectedButtonColor(0);
           setTimeout(() => {
             $recentMovieContainer.style.transition = "ease 1s";
           }, 1000);
         } else {
-          moveRecentlyCardByIndex(
+          moveElementByWidth(
             $recentMovieContainer,
-            -(100 * recentlyLastIndex),
+            `${-(100 * recentlyLastIndex)}vw`,
           );
 
           // card는 결과개수 + 1이지만 슬라이드 버튼은 결과개수 만큼만 보이기 때문에 lastIndex에 1을 더해서 비교
@@ -129,7 +138,7 @@ TMDB.getNowPlaying().then((list) => {
 
       itemButton.addEventListener("click", (e) => {
         changeSelectedButtonColor(order);
-        moveRecentlyCardByIndex($recentMovieContainer, -(100 * order));
+        moveElementByWidth($recentMovieContainer, `${-(100 * order)}vw`);
         recentlyLastIndex = order;
       });
 
@@ -147,7 +156,6 @@ TMDB.getNowPlaying().then((list) => {
 
 // 인기 영화 호출
 TMDB.getPopular().then((list) => {
-  console.log(list);
   const results = list.results;
   if (results) {
     results.forEach((movie) => {
@@ -158,24 +166,66 @@ TMDB.getPopular().then((list) => {
       movieCardDiv.append(moviePosterImg);
       $popularMovieContainer.append(movieCardDiv);
     });
+    $popularMovieContainer.style.width = `${results.length * 200}px`;
 
-    document.querySelectorAll(".rightMoveButton").forEach((elem) => {
+    document.querySelectorAll(".right-move-button").forEach((elem) => {
       elem.addEventListener("click", (e) => {
-        moveRecentlyCardByIndex(
-          e.target.parentNode.parentNode.children[1],
-          -(50 * ++popularLastIndex),
+        let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
+        e.target.parentNode.setAttribute("index", ++cardLastIndex);
+
+        const parentNode = e.target.parentNode.parentNode.children[1];
+        const parentNodeActualWidth =
+          parentNode.getBoundingClientRect().width - window.innerWidth * 0.75;
+
+        console.log(-300 * cardLastIndex, -parentNodeActualWidth);
+        moveElementByWidth(
+          parentNode,
+          `${Math.max(-300 * cardLastIndex, -parentNodeActualWidth)}px`,
+        );
+
+        checkShowingLeftMoveButton(
+          e.target.previousElementSibling,
+          cardLastIndex,
+        );
+
+        checkShowingRightMoveButton(
+          e.target,
+          cardLastIndex,
+          parentNodeActualWidth,
         );
       });
     });
 
-    document.querySelectorAll(".leftMoveButton").forEach((elem) => {
+    document.querySelectorAll(".left-move-button").forEach((elem) => {
       elem.addEventListener("click", (e) => {
-        if ($popularMovieContainer.children.length < popularLastIndex) return;
-        moveRecentlyCardByIndex(
-          e.target.parentNode.parentNode.children[1],
-          $popularMovieContainer.style.width - 50 * --popularLastIndex,
+        let cardLastIndex = e.target.parentNode.getAttribute("index") ?? 0;
+        e.target.parentNode.setAttribute("index", --cardLastIndex);
+
+        const parentNode = e.target.parentNode.parentNode.children[1];
+        const parentNodeActualWidth =
+          parentNode.getBoundingClientRect().width - 1000;
+
+        moveElementByWidth(parentNode, `${-300 * cardLastIndex}px`);
+
+        checkShowingLeftMoveButton(e.target, cardLastIndex);
+        checkShowingRightMoveButton(
+          e.target.nextElementSibling,
+          cardLastIndex,
+          parentNodeActualWidth,
         );
       });
     });
   }
 });
+
+const checkShowingLeftMoveButton = (elem, index) => {
+  console.log(index);
+  if (index <= 0) buttonSwitch(elem, "off");
+  else buttonSwitch(elem, "on");
+};
+
+const checkShowingRightMoveButton = (elem, index, parentWidth) => {
+  console.log(index, parentWidth);
+  if (-300 * index <= -parentWidth) buttonSwitch(elem, "off");
+  else buttonSwitch(elem, "on");
+};
