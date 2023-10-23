@@ -1,10 +1,21 @@
+import {
+  CARD_IMAGE_SIZE,
+  IMAGE_PADDING_SIZE,
+  MAX_CARD_CONTAINER_SIZE,
+  $modalContainer,
+  $modal,
+  $shadow,
+  $searchResultContainer,
+} from './index.js';
+import TMDB from './tmdb.js';
+
 // div를 움직이게 하는 함수
-const moveElementByWidth = (elem, width) => {
+export const moveElementByWidth = (elem, width) => {
   elem.style.transform = `translate3d(${width}, 0px, 0px)`;
 };
 
 // 최신 영화 슬라이드 버튼 클릭시 색상 변화
-const changeSelectedButtonColor = order => {
+export const changeSelectedButtonColor = order => {
   document.querySelectorAll('.list-button').forEach(elem => {
     const elemOrder = elem.getAttribute('order');
     if (order === +elemOrder) {
@@ -13,7 +24,7 @@ const changeSelectedButtonColor = order => {
   });
 };
 
-const renderMovieSlideList = (container, dataList) => {
+export const renderMovieSlideList = (container, dataList) => {
   const results = dataList.results;
   if (results) {
     results.forEach(movie => {
@@ -38,7 +49,7 @@ const renderMovieSlideList = (container, dataList) => {
   });
 };
 
-const renderSearchResultList = (container, dataList) => {
+export const renderSearchResultList = (container, dataList) => {
   const results = dataList.results;
   if (results) {
     if (results.length > 0) {
@@ -102,39 +113,39 @@ const showModal = () => {
   $shadow.style.zIndex = '98';
 };
 
-const hideModal = () => {
+export const hideModal = () => {
   $modal.style.opacity = '0';
   $modal.style.zIndex = '-999';
   $shadow.style.opacity = '0';
   $shadow.style.zIndex = '-99';
 };
 
-const showLoading = elem => {
+export const showLoading = elem => {
   elem.classList.add('spin');
   elem.parentElement.classList.add('spin-bg');
 };
 
-const hideLoading = elem => {
+export const hideLoading = elem => {
   elem.classList.remove('spin');
   elem.parentElement.classList.remove('spin-bg');
 };
 
-const checkShowingLeftMoveButton = (elem, index) => {
+export const checkShowingLeftMoveButton = (elem, index) => {
   if (index <= 0) buttonSwitch(elem, 'off');
   else buttonSwitch(elem, 'on');
 };
 
-const checkShowingRightMoveButton = (elem, index) => {
+export const checkShowingRightMoveButton = (elem, index) => {
   if (-CARD_IMAGE_SIZE * index <= -MAX_CARD_CONTAINER_SIZE) buttonSwitch(elem, 'off');
   else buttonSwitch(elem, 'on');
 };
 
-const showSearchResult = () => {
+export const showSearchResult = () => {
   document.querySelectorAll('.movie-main').forEach(elem => (elem.style.display = 'none'));
   $searchResultContainer.style.display = 'flex';
 };
 
-const hideSearchResult = () => {
+export const hideSearchResult = () => {
   document.querySelectorAll('.movie-main').forEach(elem => (elem.style.display = 'block'));
   $searchResultContainer.style.display = 'none';
 };

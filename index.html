@@ -6,9 +6,7 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>영화 소개 페이지</title>
-        <script src="js/tmdb.js" ></script>
-        <script defer src="js/helper.js" ></script>
-        <script defer src="js/index.js" ></script>
+        <script type="module" src="js/index.js" ></script>
         <link rel="stylesheet" href="css/recently-movie.css" />
         <link rel="stylesheet" href="css/popular-movie.css" />
         <link rel="stylesheet" href="css/search-result.css" />
@@ -50,7 +48,7 @@
         <div id="modal">
             <header class="modal-title">
                 <h1 id="modalMovieTitle"></h1>
-                <button onclick="hideModal()">X</button>
+                <button id="modalCloseButton">X</button>
             </header>
             <div class="modal-container">
                 <div>

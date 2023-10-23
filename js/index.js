@@ -1,17 +1,31 @@
-const $recentMovieContainer = document.getElementById('recentMovieContainer');
-const $dotButtonContainer = document.getElementById('dotButtonContainer');
-const $popularMovieContainer = document.getElementById('popularMovieContainer');
-const $topRatedMovieContainer = document.getElementById('topRatedMovieContainer');
-const $modal = document.getElementById('modal');
-const $modalContainer = document.querySelector('.modal-container');
-const $shadow = document.getElementById('shadow');
-const $searchInput = document.getElementById('searchInput');
-const $inputForm = document.getElementById('inputForm');
-const $searchResultContainer = document.getElementById('searchResultContainer');
+import TMDB from './tmdb.js';
+import {
+  renderSearchResultList,
+  showLoading,
+  hideLoading,
+  hideSearchResult,
+  checkShowingLeftMoveButton,
+  checkShowingRightMoveButton,
+  moveElementByWidth,
+  renderMovieSlideList,
+  hideModal,
+  showSearchResult,
+  changeSelectedButtonColor,
+} from './helper.js';
+export const $recentMovieContainer = document.getElementById('recentMovieContainer');
+export const $dotButtonContainer = document.getElementById('dotButtonContainer');
+export const $popularMovieContainer = document.getElementById('popularMovieContainer');
+export const $topRatedMovieContainer = document.getElementById('topRatedMovieContainer');
+export const $modal = document.getElementById('modal');
+export const $modalContainer = document.querySelector('.modal-container');
+export const $shadow = document.getElementById('shadow');
+export const $searchInput = document.getElementById('searchInput');
+export const $inputForm = document.getElementById('inputForm');
+export const $searchResultContainer = document.getElementById('searchResultContainer');
 
-const CARD_IMAGE_SIZE = 15;
-const IMAGE_PADDING_SIZE = 10;
-const MAX_CARD_CONTAINER_SIZE = CARD_IMAGE_SIZE * 20 + IMAGE_PADDING_SIZE * 3 - 100;
+export const CARD_IMAGE_SIZE = 15;
+export const IMAGE_PADDING_SIZE = 10;
+export const MAX_CARD_CONTAINER_SIZE = CARD_IMAGE_SIZE * 20 + IMAGE_PADDING_SIZE * 3 - 100;
 
 let recentlyMovieSlideInterval = null;
 let recentlyLastIndex = 0;
@@ -164,6 +178,8 @@ document.querySelectorAll('.left-move-button').forEach(elem => {
       hideModal();
     }
   });
+
+  document.getElementById('modalCloseButton').addEventListener('click', hideModal);
 })();
 
 $inputForm.addEventListener('submit', e => {

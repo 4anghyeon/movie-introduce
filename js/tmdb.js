@@ -42,3 +42,4 @@ class TMDB {
       .catch(err => console.error(err));
   }
 }
+export default TMDB;
