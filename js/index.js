@@ -47,7 +47,7 @@ TMDB.getNowPlaying().then(list => {
           // card는 결과개수 + 1이지만 슬라이드 버튼은 결과개수 만큼만 보이기 때문에 lastIndex에 1을 더해서 비교
           changeSelectedButtonColor(recentlyLastIndex + 1 >= resultLength ? 0 : recentlyLastIndex);
         }
-      }, 3000000);
+      }, 3000);
     };
 
     // 카드를 포함하는 박스에 마우스를 올려놓을시 Interval 제거
